@@ -1,0 +1,9 @@
+{
+  "cooling-fan-assy": {"description": "Cabinet and spindle cooling fan assembly", "quantity": 2, "bin": "A-12", "lead_time_days": 3},
+  "coolant-pump-seal": {"description": "Coolant pump mechanical seal kit", "quantity": 4, "bin": "A-14", "lead_time_days": 2},
+  "carbide-insert-set": {"description": "Carbide insert set (10 pcs)", "quantity": 12, "bin": "B-03", "lead_time_days": 1},
+  "spindle-drive-fuse": {"description": "Spindle drive fuse, rated per drawing", "quantity": 6, "bin": "C-07", "lead_time_days": 2},
+  "vfd-power-module": {"description": "Spindle drive power module", "quantity": 0, "bin": "C-09", "lead_time_days": 7},
+  "tool-holder": {"description": "Tool holder with taper", "quantity": 3, "bin": "B-11", "lead_time_days": 4},
+  "clamp-set": {"description": "Workholding clamp set", "quantity": 0, "bin": "B-15", "lead_time_days": 5}
+}

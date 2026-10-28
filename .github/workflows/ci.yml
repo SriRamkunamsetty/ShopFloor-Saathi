@@ -1,0 +1,57 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - name: Install
+        run: pip install -e ".[dev]"
+      - name: Lint
+        run: ruff check . && ruff format --check .
+      - name: Tests (includes golden diagnosis scenarios and the scripted-Gemini path)
+        run: pytest
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t shopfloor-saathi:ci .
+      - name: Container smoke test (no cloud credentials, dev auth in a non-production env)
+        run: |
+          docker run -d --name saathi -p 8080:8080 \
+            -e SAATHI_ENV=development -e SAATHI_AUTH_MODE=dev -e SAATHI_REPO_BACKEND=memory \
+            shopfloor-saathi:ci
+          for i in $(seq 1 20); do curl -fsS localhost:8080/healthz && break || sleep 1; done
+          curl -fsS localhost:8080/api/machines >/dev/null
+          docker rm -f saathi
+
+  # Agent evaluation needs Gemini credentials; run it on demand from a trusted branch.
+  # Add a Workload Identity Federation provider, then enable this job:
+  #
+  # adk-eval:
+  #   if: github.ref == 'refs/heads/main'
+  #   runs-on: ubuntu-latest
+  #   permissions: {contents: read, id-token: write}
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: google-github-actions/auth@v2
+  #       with: {workload_identity_provider: ..., service_account: ...}
+  #     - run: pip install -e ".[dev]" && adk eval adk_apps/saathi eval/saathi.evalset.json --config_file_path eval/test_config.json

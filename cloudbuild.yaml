@@ -1,0 +1,70 @@
+# Cloud Build: test -> build -> push -> deploy a new Cloud Run revision with no traffic -> smoke test -> shift traffic.
+# Run with: gcloud builds submit --config cloudbuild.yaml --substitutions=_REGION=asia-south1
+substitutions:
+  _REGION: asia-south1
+  _SERVICE: shopfloor-saathi
+  _REPO: saathi
+  _SA: saathi-run@${PROJECT_ID}.iam.gserviceaccount.com
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+steps:
+  - id: test
+    name: python:3.12-slim
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        pip install --quiet -e ".[dev]" &&
+        ruff check . &&
+        ruff format --check . &&
+        pytest
+
+  - id: build
+    name: gcr.io/cloud-builders/docker
+    args: ["build", "-t", "${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO}/${_SERVICE}:${SHORT_SHA}", "."]
+
+  - id: push
+    name: gcr.io/cloud-builders/docker
+    args: ["push", "${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO}/${_SERVICE}:${SHORT_SHA}"]
+
+  - id: deploy-no-traffic
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - ${_SERVICE}
+      - --image=${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO}/${_SERVICE}:${SHORT_SHA}
+      - --region=${_REGION}
+      - --service-account=${_SA}
+      - --no-allow-unauthenticated
+      - --no-traffic
+      - --tag=candidate
+      - --min-instances=0
+      - --max-instances=10
+      - --memory=1Gi
+      - --cpu=1
+      - --concurrency=40
+      - --timeout=120
+      - --set-env-vars=SAATHI_LLM_ENABLED=true,GOOGLE_GENAI_USE_VERTEXAI=true,GOOGLE_CLOUD_PROJECT=${PROJECT_ID},GOOGLE_CLOUD_LOCATION=${_REGION}
+
+  - id: smoke-test
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        URL=$$(gcloud run services describe ${_SERVICE} --region=${_REGION} \
+          --format='value(status.traffic.filter(tag=candidate).url)') &&
+        TOKEN=$$(gcloud auth print-identity-token) &&
+        curl -fsS -H "Authorization: Bearer $$TOKEN" "$$URL/healthz"
+
+  - id: shift-traffic
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    args: ["run", "services", "update-traffic", "${_SERVICE}", "--region=${_REGION}", "--to-latest"]
+
+images:
+  - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO}/${_SERVICE}:${SHORT_SHA}

@@ -1,0 +1,19 @@
+date,machine_id,problem,action
+2025-11-03,M-07,mc garam ho raha tmp high fan slow,fan brg replaced cleaned rad filter ok
+2025-11-19,M-07,spindle rpm sag hot cabinet smell,cleaned cabinet vents clg level topped ok
+2026-01-14,M-04,coolant pump leaking tmp rising,pump seal replaced clg conc corrected
+2026-02-02,M-03,finish bad burrs tool wear 205,insert changed counter reset ok
+2026-02-20,M-03,noisy cut wear counter high,new carbide insert fitted first off checked
+2026-03-11,M-05,drive trip overload alarm,jammed tool cleared fuse checked ok
+2026-03-29,M-05,power spike drive overload burning smell,spindle drive fuse replaced terminals tightened
+2026-04-08,M-02,chatter torque high worn tool,tool holder taper cleaned insert changed
+2026-04-27,M-02,spindle load alarm slipping holder,clamp set replaced clamping force rechecked
+2026-05-06,M-01,brg noisy spindle hum,grs added belt tension adjusted ok
+2026-05-22,M-06,vib at high rpm,brg grs checked runout ok
+2026-06-10,M-07,thermal alarm hot smell process temp gap low,fan motor coupling loose retightened radiator cleaned
+2026-06-30,M-08,low coolant flow foaming,tank cleaned conc corrected nozzles cleared
+2026-07-15,M-04,tool burn marks temp rising,clg nozzle blocked cleared pump checked
+2026-08-01,M-03,wear 210 dimensional drift,insert replaced log updated tool life 195
+2026-08-19,M-05,drive trip after crash,tool crash cleared no module damage test run ok
+2026-09-05,M-01,hot cabinet fan blocked dust,filter cleaned fan ok
+2026-09-23,M-06,squeal at start brg dry,regrease brg ok monitored

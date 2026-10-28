@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#14171c">
+  <title>ShopFloor Saathi</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="/icon.svg" alt="" width="28" height="28">
+      <div>
+        <h1>ShopFloor Saathi</h1>
+        <p class="tag">Symptom to approved fix, with the numbers</p>
+      </div>
+    </div>
+    <div class="session">
+      <span id="mode-badge" class="badge" title="Assistant mode">…</span>
+      <label id="role-wrap" class="role" hidden>
+        Role
+        <select id="role-select" aria-label="Role">
+          <option value="operator">Operator</option>
+          <option value="supervisor">Supervisor</option>
+        </select>
+      </label>
+    </div>
+  </header>
+
+  <main>
+    <section class="impact" aria-labelledby="impact-h">
+      <h2 id="impact-h" class="sr-only">Impact ledger</h2>
+      <div class="kpi"><span class="kpi-v" id="kpi-inr">–</span><span class="kpi-l">Projected savings (approved orders)</span></div>
+      <div class="kpi"><span class="kpi-v" id="kpi-min">–</span><span class="kpi-l">Downtime minutes avoided</span></div>
+      <div class="kpi"><span class="kpi-v" id="kpi-co2">–</span><span class="kpi-l">kg CO₂ avoided</span></div>
+      <div class="kpi"><span class="kpi-v" id="kpi-pending">–</span><span class="kpi-l">Awaiting approval</span></div>
+    </section>
+
+    <div class="layout">
+      <section class="panel" aria-labelledby="fleet-h">
+        <h2 id="fleet-h">Machines</h2>
+        <div id="fleet" class="fleet" role="list"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="diag-h">
+        <h2 id="diag-h">Diagnose</h2>
+        <form id="diag-form" class="stack">
+          <label>Machine
+            <select id="machine-select" required></select>
+          </label>
+          <label>What is wrong? (any language)
+            <textarea id="symptom" rows="3" maxlength="2000" placeholder="e.g. machine garam ho raha hai, awaaz aa rahi hai"></textarea>
+          </label>
+          <div class="row">
+            <button type="submit" class="primary">Diagnose</button>
+          </div>
+        </form>
+        <div id="report" aria-live="polite"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="wo-h">
+        <h2 id="wo-h">Work orders</h2>
+        <div id="orders" class="stack"></div>
+      </section>
+
+      <section class="panel chat" aria-labelledby="chat-h">
+        <h2 id="chat-h">Ask Saathi</h2>
+        <div id="chat-log" class="chat-log" aria-live="polite"></div>
+        <form id="chat-form" class="chat-form">
+          <select id="voice-lang" aria-label="Voice language">
+            <option value="en-IN">English</option>
+            <option value="hi-IN">हिन्दी</option>
+            <option value="te-IN">తెలుగు</option>
+            <option value="ta-IN">தமிழ்</option>
+          </select>
+          <button type="button" id="mic" aria-label="Speak" title="Speak">🎤</button>
+          <label class="photo" title="Attach a photo of a gauge, display or part">
+            📷<input id="photo" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" hidden>
+          </label>
+          <input id="chat-input" type="text" maxlength="2000" autocomplete="off" placeholder="Type or speak, e.g. M-07 garam ho raha hai" required>
+          <button type="submit" class="primary">Send</button>
+        </form>
+        <p id="photo-note" class="muted" hidden></p>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p>Advice only. Apply lockout/tagout before any repair. Savings are projections under stated assumptions, not audited results.</p>
+  </footer>
+  <script src="/app.js" defer></script>
+</body>
+</html>

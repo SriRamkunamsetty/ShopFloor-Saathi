@@ -1,0 +1,44 @@
+[
+  {
+    "name": "hinglish heat complaint on the machine with a real heat fault",
+    "machine_id": "M-07",
+    "symptom": "machine garam ho raha hai",
+    "expect": {"abstained": false, "failure_mode": "HDF", "priority": "P1", "work_order": true, "missing_parts": []}
+  },
+  {
+    "name": "tool wear detected from telemetry with no operator description",
+    "machine_id": "M-03",
+    "symptom": "",
+    "expect": {"abstained": false, "failure_mode": "TWF", "priority": "P1", "work_order": true, "missing_parts": []}
+  },
+  {
+    "name": "power spike flags the out-of-stock drive module",
+    "machine_id": "M-05",
+    "symptom": "drive trip burning smell",
+    "expect": {"abstained": false, "failure_mode": "PWF", "priority": "P1", "work_order": true, "missing_parts": ["vfd-power-module"]}
+  },
+  {
+    "name": "overstrain flags the out-of-stock clamp set",
+    "machine_id": "M-02",
+    "symptom": "chatter and the tool holder is slipping",
+    "expect": {"abstained": false, "failure_mode": "OSF", "priority": "P1", "work_order": true, "missing_parts": ["clamp-set"]}
+  },
+  {
+    "name": "operator complaint on a healthy machine gets advice but no work order",
+    "machine_id": "M-01",
+    "symptom": "strange noise from spindle awaaz",
+    "expect": {"abstained": false, "failure_mode": null, "work_order": false, "advisory": true}
+  },
+  {
+    "name": "healthy machine and no symptom abstains",
+    "machine_id": "M-04",
+    "symptom": "",
+    "expect": {"abstained": true, "work_order": false}
+  },
+  {
+    "name": "nonsense symptom on a healthy machine abstains instead of guessing",
+    "machine_id": "M-06",
+    "symptom": "zzqx wvvk plorb",
+    "expect": {"abstained": true, "work_order": false}
+  }
+]
