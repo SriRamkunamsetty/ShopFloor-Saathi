@@ -9,6 +9,22 @@ and CO₂ impact. **A supervisor must approve every work order. Agents can never
 Built for the Google "Manufacturing: Intelligent Operations & Industrial Efficiency" challenge with
 Gemini, the Agent Development Kit (ADK), and Cloud Run.
 
+## Tech Stack
+
+| Layer | Technologies & Tools | Purpose |
+|---|---|---|
+| **AI & Agent Orchestration** | **Google Agent Development Kit (ADK)**, **Google GenAI SDK** | Multi-agent orchestration, dynamic tool-calling graph, session management |
+| **Foundation Models** | **Gemini 2.5 Pro** (`shift_lead`), **Gemini 2.5 Flash** (Specialists) | Multimodal visual inspection (photos/HMI gauges), vernacular reasoning, high-speed specialist delegation |
+| **Backend Framework** | **FastAPI**, **Uvicorn**, **Pydantic v2** | Async REST API, strict request/response data contracts, rate limiting, security middleware |
+| **Data & Diagnostics** | **NumPy**, **Pandas** | Time-series telemetry analysis, AI4I 2020 predictive maintenance rules, baseline drift detection |
+| **Retrieval & NLP** | **TF-IDF & Cosine Similarity**, Vernacular Domain Lexicon | Grounded manual & maintenance log retrieval with Hinglish & Devanagari technical query expansion |
+| **Frontend / PWA** | **HTML5, CSS3, Modern ES6+ JavaScript** | Dependency-free, buildless Progressive Web App; zero-`innerHTML` XSS immunity; Web Speech API (EN, HI, TE, TA); camera capture |
+| **Persistence & State** | **Google Cloud Firestore**, Local JSON / In-Memory | Work-order lifecycle persistence with concurrency locking and machine/mode idempotency |
+| **Security & Auth** | **Firebase Authentication**, Custom Claims RBAC | Cryptographic JWT verification separating `operator` actions from `supervisor` approval authority |
+| **Cloud & Deployment** | **Google Cloud Run**, **Artifact Registry**, **Cloud Build** | Serverless private microservice, unprivileged Docker containers, automated canary deployments with smoke testing |
+| **Infrastructure as Code** | **Terraform** | Declarative least-privilege IAM, service accounts, Firestore database, and registry provisioning |
+| **Testing & Code Quality** | **Pytest**, **pytest-asyncio**, **Ruff**, **GitHub Actions** | 84 unit & golden scenario tests, strict linting/formatting, Python matrix CI (3.11, 3.12, 3.13) |
+
 ## What is verified and what is not
 
 | Area | Status |
